@@ -1,8 +1,9 @@
 import java.io.*;
 import java.util.*;
 
-public class Day2 {
+public class Day2_2 {
     private static final Map<String, Integer> shapePoints = getShapeAndPoints();
+    private static Map<String, String> shapeMatch = new HashMap<>();
 
     public static void main(String[] args) throws FileNotFoundException {
         List<List<String>> choices = readFile("./day2_input.txt");
@@ -16,19 +17,17 @@ public class Day2 {
     }
 
     public static Integer compareOptions(String myOption, String opponentOption) {
-        if(Objects.equals(shapePoints.get(myOption), shapePoints.get(opponentOption))) {
-            return 3 + shapePoints.get(myOption);
+        if(myOption.equals("X")) {
+            shapeMatch = getShapeMatch("lost");
+            return shapePoints.get(shapeMatch.get(opponentOption));
         }
 
-        else if(
-                myOption.equals("Z") && opponentOption.equals("A")
-                || myOption.equals("Y") && opponentOption.equals("C")
-                || myOption.equals("X") && opponentOption.equals("B")
-        ) {
-            return shapePoints.get(myOption);
-        } else {
-            return 6 + shapePoints.get(myOption);
+        else if(myOption.equals("Y")) {
+            return shapePoints.get(opponentOption) + 3;
         }
+
+        shapeMatch = getShapeMatch("win");
+        return shapePoints.get(shapeMatch.get(opponentOption)) + 6;
     }
     public static Map<String, Integer> getShapeAndPoints() {
         Map<String, Integer> shapePoints = new HashMap<>();
@@ -44,6 +43,22 @@ public class Day2 {
         return shapePoints;
     }
 
+    public static Map<String, String> getShapeMatch(String option) {
+        switch (option) {
+            case "win" -> {
+                shapeMatch.put("A", "B");
+                shapeMatch.put("B", "C");
+                shapeMatch.put("C", "A");
+            }
+            case "lost" -> {
+                shapeMatch.put("A", "C");
+                shapeMatch.put("C", "B");
+                shapeMatch.put("B", "A");
+            }
+        }
+
+        return shapeMatch;
+    }
     public static List<List<String>> readFile(String path) throws FileNotFoundException {
         try {
             String data;

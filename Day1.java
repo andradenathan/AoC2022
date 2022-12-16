@@ -1,8 +1,6 @@
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import static java.lang.Integer.compare;
 import static java.lang.Integer.parseInt;
 
 public class Day1 {
